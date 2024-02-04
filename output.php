@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Chats</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
@@ -37,12 +38,12 @@
         }
 
         .page {
-        width: 400px;
+        /* width: 400px; */
         height: 100%;
-        display: flex;
+        /* display: flex; */
         align-items: center;
         justify-content: center;
-        margin-left: 400px;
+        /* margin-left: 400px; */
         }
 
         .marvel-device .screen {
@@ -458,10 +459,11 @@
     </style>
 </head>
 <body style="">
-<div id='fa' style='height:150px; width:100%;'></div>
+<div id='fa' style='width:100%;'></div>
     <div id="empty" style='z-index: 100000;'></div>
-    <div class="page" id="chat">
-    
+    <div class="row m-1">
+      <div class="col-md-4 col-sm-12"></div>
+      <div class="col-md-4 col-sm-12 page" id="chat">
         <div class="marvel-device nexus5">
           <div class="top-bar"></div>
           <div class="sleep"></div>
@@ -589,8 +591,14 @@
             </div>
           </div>
         </div>
-        
       </div>
+      <div class="col-md-4 col-sm-12"></div>
+    </div>
+    <!-- <div class="page" id="chat">
+    
+        
+        
+      </div> -->
       
 </body>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
