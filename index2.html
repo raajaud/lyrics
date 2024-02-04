@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lyrics Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: rgba(255, 255, 255, 0.9);
+      background-size: cover;
+      font-size: 12px !important;
+    }
+
+    .chat-container {
+      width: 100%;
+      overflow: hidden; /* Clear the float */
+    }
+
+    #chat1 {
+      margin-left: 300px;
+      width: 300px;
+      float: left; /* Float left to position them side by side */
+      box-sizing: border-box; /* Include padding and border in the width calculation */
+    }
+
+    #chat1 img {
+      width: 100%; /* Make the image fill the container */
+      height: auto; /* Maintain the aspect ratio of the image */
+    }
+    .chat {
+      width: 300px;
+      height: 620px;
+      padding: 20px;
+      background-image: url('bg.jpeg'); 
+    }
+    #chat {
+      width: 300px;
+      height: 600px;
+      /* border: 1px solid #ddd; */
+      overflow-y: scroll;
+      padding: 10px;
+      
+      margin: 10px auto;
+      /* padding-bottom: 20px; */
+      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+      border-radius: 5px;
+    }
+
+
+    .chatbox {
+      width: 340px;
+      flex: 1;
+      box-sizing: border-box;
+      margin: 100px;
+    }
+
+    .chatbox img {
+      width: 100%;
+      height: auto;
+      position: relative;
+      top: -5px;
+      left: 0px;
+      
+    }
+
+    .message {
+        max-width: 70%;
+        background-color: #e2f9ff;
+        border-radius: 8px;
+        padding: 8px;
+        margin: 2px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        word-wrap: break-word;
+        position: relative;
+        right: -65px;
+        bottom: -570px;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background-color: #00a884;
+        color: #fff;
+    }
+
+    #timer {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<div id="timer">00:00</div>
+<div class="chat-container">
+  
+  <div class="chatbox">
+    <div class="chat">
+      <div id="chat"></div>
+    </div>
+    <img src="key.jpg" alt="">
+  </div>
+  <div id="chat1">
+    <img src="sc.PNG" alt="">
+  </div>
+</div>
+
+<script>
+  // Sample lyrics with timestamps and text
+  const lyrics = [
+        "[00:02.06]Tu Mera Koyi Na",
+        "[00:04.19]Hoke Bhi Kuchh Laage",
+        "[00:06.84]Tu Mera Koyi Na",
+        "[00:09.23]Hoke Bhi Kuchh Laage",
+        // "[00:22.06]Tu Mera Koyi Na",
+        // "[00:24.19]Hoke Bhi Kuchh Laage",
+        // "[00:26.84]Tu Mera Koyi Na",
+        // "[00:29.23]Hoke Bhi Kuchh Laage",
+        "[00:31.89]Kiya Re Jo Bhi Toone",
+        "[00:33.76]Kaise Kiya Re",
+        "[00:37.22]Jiya Ko Mere Baandh",
+        "[00:39.61]Aise Liya Re",
+        "[00:42.26]Samajh Ke Bhi Na",
+        "[00:44.92]Samajh Main Sakun",
+        "[00:47.57]Saweron Ka Bhi Mere",
+        "[00:49.97]Tu Sooraj Laage",
+        "[00:52.62]Tu Mera Koyi Na",
+        "[00:55.01]Hoke Bhi Kuchh Laage",
+        "[00:57.67]Tu Mera Koyi Na",
+        "[01:00.06]Hoke Bhi Kuchh Laage",
+        "[01:02.72]Tu Mera Koyi Na",
+        "[01:05.11]Hoke Bhi Kuchh Laage",
+        "[01:09.89]Apna Bana Le Piya",
+        "[01:12.02]Apna Bana Le Piya",
+        "[01:14.93]Apna Bana Le Mujhe",
+        "[01:16.80]Apna Bana Le Piya",
+        "[01:20.25]Apna Bana Le Piya",
+        "[01:22.64]Apna Bana Le Piya",
+        "[01:25.03]Dil Ke Nagar Mein",
+        "[01:28.22]Shehar Tu Basa Le Piya",
+        "[01:53.46]Chhoone Se Tere",
+        "[01:55.31]Haan Tere Haan Tere",
+        "[02:00.36]Feeki Ruton Ko Rang Lage",
+        "[02:07.81]Hmm.. Chhoone Se Tere",
+        "[02:10.71]Haan Tere Haan Tere",
+        "[02:13.90]Feeki Ruton Ko Rang Lage",
+        "[02:18.95]Teri Disha Mein Kyun Chalne Se Mere",
+        "[02:24.00]Pairon Ko Pankh Lage",
+        "[02:27.19]Raha Na Mere Kaam Ka Jag Saara",
+        "[02:32.24]Haan Bas Tere Naam Se Hi Guzaara",
+        "[02:37.28]Ulajh Ke Yoon Na",
+        "[02:41.00]Sulajh Na Sakun",
+        "[02:45.25]Zubaaniyan Teri",
+        "[02:47.64]Jhoothi Bhi Sach Laage",
+        "[02:50.03]Tu Mera Koyi Na",
+        "[02:52.42]Hoke Bhi Kuchh Laage",
+        "[02:55.08]Tu Mera Koyi Na",
+        "[02:59.06]Hoke Bhi Kuchh Laage",
+        "[03:00.65]Tu Mera Koyi Na",
+        "[03:03.04]Hoke Bhi Kuchh Laage",
+        "[03:07.29]Apna Bana Le Piya",
+        "[03:09.42]Apna Bana Le Piya",
+        "[03:12.07]Apna Bana Le Mujhe",
+        "[03:14.20]Apna Bana Le Piya",
+        "[03:17.39]Apna Bana Le Piya",
+        "[03:19.51]Apna Bana Le Piya",
+        "[03:22.17]Dil Ke Nagar Mein",
+        "[03:24.29]Shehar Tu Basa Le Piya",
+        "[03:29.34]Ho Sab Kuchh Mera Chahe",
+        "[03:34.12]Naam Apne Likha Le",
+        "[03:39.17]Badle Mein Itni Toh",
+        "[03:44.48]Yaari Nibha Le",
+        "[03:49.53]Jag Ki Hirasat Se",
+        "[03:53.51]Mujhko Chhuda Le",
+        "[03:58.29]Apna Bana Le",
+        "[04:02.28]Bas Apna Bana Le",
+        "[04:08.13]Apna Bana Le",
+        "[04:12.90]Apna Bana Le"
+  ];
+  
+  // Variables for timer
+  let timerInterval;
+  let elapsedTime = 0;
+
+  // Function to display lyrics in the chat area
+  function displayLyrics() {
+    const chatDiv = document.getElementById('chat');
+    const timerDiv = document.getElementById('timer');
+
+    timerInterval = setInterval(() => {
+      elapsedTime++;
+      timerDiv.textContent = formatTime(elapsedTime);
+    }, 1000);
+    // var slno = 0;
+    lyrics.forEach((line, index) => {
+      const [timestamp, text] = parseLyricsLine(line);
+
+      setTimeout(() => {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.classList.add('user-message');
+        messageDiv.textContent = text;
+        chatDiv.appendChild(messageDiv);
+
+        // Scroll to the bottom to show the latest message
+        chatDiv.scrollTop = chatDiv.scrollHeight;
+      }, convertTimestampToSeconds(timestamp) * 1000);
+    });
+  }
+
+  // Function to parse lyrics line into timestamp and text
+  function parseLyricsLine(line) {
+    const regex = /\[(\d{2}:\d{2}.\d{2})\](.*)/;
+    const match = line.match(regex);
+
+    if (match) {
+      return [match[1], match[2].trim()];
+    }
+
+    return ["00:00.00", line.trim()];
+  }
+
+  // Function to convert timestamp to seconds
+  function convertTimestampToSeconds(timestamp) {
+    const [minutes, seconds] = timestamp.split(":").map(Number);
+    return minutes * 60 + seconds;
+  }
+
+  // Function to format time in MM:SS format
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  // Call the function to display lyrics
+  displayLyrics();
+</script>
+
+</body>
+</html>
+
+[00:01.50]Mai tera khayal rakhunga
+[00:02.56]Mai tujhe kuye mai nhi kudne dunga
+[00:04.12]Tujhse bhi teri surakhsha karunga
+[00:05.54]Tujhse hamesha pyar karunga
+[00:06.68]Aur pyar mai cheating nhi karunga
+[00:08.28]Tujhe kabhi jhut nhi bolunga
+[00:09.32]matlab bolunga....
+[00:10.50]chhota mota
+[00:11.89]but aisa jhut nhi bolunga jo bemani hojaye
+[00:15.40]Pakka....?
+[00:16.87]Bhaage ga to nhi?
+[00:25.90]Kardena mere naam ka
+[00:27.47]galiyon mai shumar
+[00:34.49]Gar inn ankho ki wadon se mukar jau
+[00:39.49]Mammi kasam 
+[00:41.20]jayegi, to tu hi chhor ke jayegi 
