@@ -33,7 +33,7 @@
         padding: 0;
         height: 400px !important;
         background:url(https://i.ibb.co/q9mygMq/background.jpg);
-        background-repeat: no-repeat;
+        background-repeat: repeat;
         background-size:cover;
         }
 
@@ -173,7 +173,7 @@
         /* Conversation */
 
         .conversation {
-        height: 600px;
+        height: 550px;
         position: relative;
         background: url("bg.jpeg") repeat;
         z-index: 0;
@@ -459,9 +459,9 @@
     </style>
 </head>
 <body style="">
-<div id='fa' style='width:100%;'></div>
-    <div id="empty" style='z-index: 100000;'></div>
-    <div class="container">
+  <div id='fa' style='width:100%;'></div>
+  <div id="empty" style='z-index: 100000;'></div>
+    <div class="container mt-4">
     <div class="row">
       <div class="col-md-4 col-sm-12"></div>
       <div class="col-md-4 col-sm-12 page" id="chat">
